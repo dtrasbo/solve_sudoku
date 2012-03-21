@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'rubygems' # For 1.8.7 compatibility.
+require 'bundler/setup'
+require 'solve_sudoku'
+
+input = ARGF.read
+counter = 0
+
+begin
+  Sudoku::SolutionSet.new(input).each do |solution|
+    puts "\e[37m#{'-' * 35}\e[0m"
+    puts "\e[1mSolution ##{counter += 1}\e[0m"
+    puts
+    puts solution
+    puts
+    puts
+  end
+rescue Sudoku::SolutionSet::Process::OutOfHistory
+  print "\e[1m"
+
+  if counter.zero?
+    puts "\e[31mThe puzzle is unsolvable."
+  elsif counter == 1
+    puts "\e[32mThe input is a proper puzzle."
+  else
+    puts "\e[33mThe puzzle has multiple solutions.\e[0m"
+  end
+
+  print "\e[0m"
+end
+
